@@ -77,7 +77,6 @@ const program = new commander.Command(packageJson.name)
     '--scripts-version <alternative-package>',
     'use a non-standard version of solid-scripts'
   )
-  .option('--use-npm')
   .option('--typescript')
   .allowUnknownOption()
   .on('--help', () => {
@@ -131,7 +130,7 @@ if (program.info) {
       {
         System: ['OS', 'CPU'],
         Binaries: ['Node', 'npm', 'Yarn'],
-        Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
+        Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
         npmPackages: ['solid-js', 'solid-elements', 'solid-scripts'],
         npmGlobalPackages: ['create-solid'],
       },
@@ -143,14 +142,29 @@ if (program.info) {
     .then(console.log);
 }
 
-if (typeof projectName === 'undefined') {
-  console.error('Please specify the project directory:');
+if (typeof projectTemplate === 'undefined') {
+  console.error('Please specify the project template:');
   console.log(
-    `  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}`
+    `  ${chalk.cyan(program.name())} ${chalk.green('<project-template>')}`
   );
   console.log();
   console.log('For example:');
-  console.log(`  ${chalk.cyan(program.name())} ${chalk.green('my-solid-app')}`);
+  console.log(`  ${chalk.cyan(program.name())} ${chalk.green('app')}`);
+  console.log();
+  console.log(
+    `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
+  );
+  process.exit(1);
+}
+
+if (typeof projectName === 'undefined') {
+  console.error('Please specify the project directory:');
+  console.log(
+    `  ${chalk.cyan(program.name())} ${chalk.green('<project-template> <project-directory>')}`
+  );
+  console.log();
+  console.log('For example:');
+  console.log(`  ${chalk.cyan(program.name())} ${chalk.green('app my-solid-app')}`);
   console.log();
   console.log(
     `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
@@ -171,7 +185,6 @@ createApp(
   projectName,
   program.verbose,
   program.scriptsVersion,
-  program.useNpm,
   program.typescript,
 );
 
@@ -180,7 +193,6 @@ function createApp(
   name,
   verbose,
   version,
-  useNpm,
   useTypescript
 ) {
   const root = path.resolve(name);
@@ -205,7 +217,7 @@ function createApp(
     JSON.stringify(packageJson, null, 2) + os.EOL
   );
 
-  const useYarn = useNpm ? false : shouldUseYarn();
+  const useYarn = process.env._.endsWith('yarn') && shouldUseYarn()
   const originalDirectory = process.cwd();
   process.chdir(root);
   if (!useYarn && !checkThatNpmCanReadCwd()) {
