@@ -77,7 +77,6 @@ const program = new commander.Command(packageJson.name)
     '--scripts-version <alternative-package>',
     'use a non-standard version of solid-scripts'
   )
-  .option('--typescript')
   .allowUnknownOption()
   .on('--help', () => {
     console.log(`    ${chalk.green('<template> <project-directory>')} are required.`);
@@ -185,7 +184,7 @@ createApp(
   projectName,
   program.verbose,
   program.scriptsVersion,
-  program.typescript,
+  projectTemplate.endsWith('-ts'),
 );
 
 function createApp(
