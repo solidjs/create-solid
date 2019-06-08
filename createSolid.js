@@ -130,7 +130,7 @@ if (program.info) {
         System: ['OS', 'CPU'],
         Binaries: ['Node', 'npm', 'Yarn'],
         Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-        npmPackages: ['solid-js', 'solid-elements', 'solid-scripts'],
+        npmPackages: ['solid-js', 'solid-scripts'],
         npmGlobalPackages: ['create-solid'],
       },
       {
@@ -628,7 +628,7 @@ function checkAppName(appName) {
   }
 
   // TODO: there should be a single place that holds the dependencies
-  const dependencies = ['solid-js', 'solid-element', 'solid-scripts'].sort();
+  const dependencies = ['solid-js', 'solid-scripts'].sort();
   if (dependencies.indexOf(appName) >= 0) {
     console.error(
       chalk.red(
@@ -682,7 +682,7 @@ function setCaretRangeForRuntimeDeps(packageName) {
   }
 
   makeCaretRange(packageJson.dependencies, 'solid-js');
-  makeCaretRange(packageJson.dependencies, 'solid-element');
+  // makeCaretRange(packageJson.dependencies, 'solid-element');
 
   fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2) + os.EOL);
 }
