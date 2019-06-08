@@ -11,6 +11,15 @@ Or,
 > yarn create solid app my-app
 ```
 
+Create a typescript app:
+```sh
+> npm init solid app-ts my-app
+```
+Or,
+```sh
+> yarn create solid app-ts my-app
+```
+
 Create a webcomponent project:
 ```sh
 > npm init solid elements my-app

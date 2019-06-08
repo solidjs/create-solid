@@ -183,16 +183,14 @@ createApp(
   projectTemplate,
   projectName,
   program.verbose,
-  program.scriptsVersion,
-  projectTemplate.endsWith('-ts'),
+  program.scriptsVersion
 );
 
 function createApp(
   template,
   name,
   verbose,
-  version,
-  useTypescript
+  version
 ) {
   const root = path.resolve(name);
   const appName = path.basename(root);
@@ -275,8 +273,7 @@ function createApp(
     version,
     verbose,
     originalDirectory,
-    useYarn,
-    useTypescript
+    useYarn
   );
 }
 
@@ -349,12 +346,14 @@ function run(
   version,
   verbose,
   originalDirectory,
-  useYarn,
-  useTypescript
+  useYarn
 ) {
   getInstallPackage(version, originalDirectory).then(packageToInstall => {
-    const allDependencies = ['solid-js', 'solid-element', packageToInstall];
-    if (useTypescript) {
+    const allDependencies = ['solid-js', packageToInstall];
+    if (template.startsWith('elements')) {
+      allDependencies.push('solid-element')
+    }
+    if (template.endsWith('-ts')) {
       allDependencies.push(
         // TODO: get user's node version instead of installing latest
         '@types/node',
@@ -376,9 +375,7 @@ function run(
         const isOnline = info.isOnline;
         const packageName = info.packageName;
         console.log(
-          `Installing ${chalk.cyan('solid-js')}, ${chalk.cyan(
-            'solid-element'
-          )}, and ${chalk.cyan(packageName)}...`
+          `Installing ${chalk.cyan('solid-js')}, and ${chalk.cyan(packageName)}...`
         );
         console.log();
 
