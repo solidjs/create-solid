@@ -214,7 +214,7 @@ function createApp(
     JSON.stringify(packageJson, null, 2) + os.EOL
   );
 
-  const useYarn = process.env._.endsWith('yarn') && shouldUseYarn()
+  const useYarn = process.env._ && process.env._.endsWith('yarn') && shouldUseYarn()
   const originalDirectory = process.cwd();
   process.chdir(root);
   if (!useYarn && !checkThatNpmCanReadCwd()) {
