@@ -292,7 +292,7 @@ function install(root, useYarn, dependencies, verbose, isOnline) {
     let args;
     if (useYarn) {
       command = 'yarnpkg';
-      args = ['add', '--exact'];
+      args = ['add', '--exact', '--dev'];
       if (!isOnline) {
         args.push('--offline');
       }
@@ -315,7 +315,7 @@ function install(root, useYarn, dependencies, verbose, isOnline) {
       command = 'npm';
       args = [
         'install',
-        '--save',
+        '--save-dev',
         '--save-exact',
         '--loglevel',
         'error',
@@ -421,6 +421,7 @@ function run(
         // On 'exit' we will delete these files from target directory.
         const knownGeneratedFiles = [
           'package.json',
+          'package-lock.json',
           'yarn.lock',
           'node_modules',
         ];
@@ -670,18 +671,18 @@ function setCaretRangeForRuntimeDeps(packageName) {
   const packagePath = path.join(process.cwd(), 'package.json');
   const packageJson = require(packagePath);
 
-  if (typeof packageJson.dependencies === 'undefined') {
-    console.error(chalk.red('Missing dependencies in package.json'));
+  if (typeof packageJson.devDependencies === 'undefined') {
+    console.error(chalk.red('Missing devDependencies in package.json'));
     process.exit(1);
   }
 
-  const packageVersion = packageJson.dependencies[packageName];
+  const packageVersion = packageJson.devDependencies[packageName];
   if (typeof packageVersion === 'undefined') {
     console.error(chalk.red(`Unable to find ${packageName} in package.json`));
     process.exit(1);
   }
 
-  makeCaretRange(packageJson.dependencies, 'solid-js');
+  makeCaretRange(packageJson.devDependencies, 'solid-js');
   // makeCaretRange(packageJson.dependencies, 'solid-element');
 
   fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2) + os.EOL);
