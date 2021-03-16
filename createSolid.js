@@ -77,6 +77,11 @@ const program = new commander.Command(packageJson.name)
     '--scripts-version <alternative-package>',
     'use a non-standard version of solid-scripts'
   )
+  .option(
+    '--npm-command <command>',
+    'use a non-standard command to install node packages',
+    'npm'
+  )
   .allowUnknownOption()
   .on('--help', () => {
     console.log(`    ${chalk.green('<template> <project-directory>')} are required.`);
@@ -128,7 +133,7 @@ if (program.info) {
     .run(
       {
         System: ['OS', 'CPU'],
-        Binaries: ['Node', 'npm', 'Yarn'],
+        Binaries: ['Node', program.npmCommand, 'Yarn'],
         Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
         npmPackages: ['solid-js', 'solid-scripts'],
         npmGlobalPackages: ['create-solid'],
@@ -312,7 +317,7 @@ function install(root, useYarn, dependencies, verbose, isOnline) {
         console.log();
       }
     } else {
-      command = 'npm';
+      command = program.npmCommand;
       args = [
         'install',
         '--save-dev',
@@ -777,7 +782,7 @@ function checkThatNpmCanReadCwd() {
     // `npm config list` is the only reliable way I could find
     // to reproduce the wrong path. Just printing process.cwd()
     // in a Node process was not enough.
-    childOutput = spawn.sync('npm', ['config', 'list']).output.join('');
+    childOutput = spawn.sync(program.npmCommand, ['config', 'list']).output.join('');
   } catch (err) {
     // Something went wrong spawning node.
     // Not great, but it means we can't do this check.
