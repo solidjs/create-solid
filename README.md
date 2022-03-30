@@ -1,3 +1,7 @@
+<p>
+  <img width="100%" src="https://assets.solidjs.com/banner?project=Create%20Solid&type=core" alt="Solid Docs">
+</p>
+
 # Create Solid
 
 Based on Create React App but tailored for [Solid](https://github.com/ryansolid/solid).
