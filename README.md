@@ -7,6 +7,8 @@
 ## *DEPRECATED*
 This project is replaced by [solid-start](https://github.com/solidui/solid-start).
 
+-----------------
+
 Based on Create React App but tailored for [Solid](https://github.com/ryansolid/solid).
 
 Create a basic app:
